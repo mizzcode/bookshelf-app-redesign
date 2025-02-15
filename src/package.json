@@ -1,0 +1,8 @@
+{
+  "name": "bookshelf-app-starter-project",
+  "module": "main.js",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.6",
+    "tailwindcss": "^4.0.6"
+  }
+}

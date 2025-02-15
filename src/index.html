@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet">
+    <title>Bookshelf App</title>
+    <script defer src="main.js"></script>
+</head>
+
+<body class="bg-black text-white mb-5">
+    <header class="border-b border-gray-500 py-2 px-5">
+        <div class="flex justify-between items-center p-2">
+            <h1 class="text-lg font-bold">Bookshelf App</h1>
+            <div class="space-x-5">
+                <button id="btnPlus" class="rounded-2xl bg-[#17171a] py-1 px-3 font-bold cursor-pointer">➕</button>
+                <button id="btnSearch" class="rounded-2xl bg-[#17171a] py-1 px-3 cursor-pointer">🔍</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto">
+        <h1 class="font-semibold text-3xl text-center my-5">Hello! Selamat Membaca!</h1>
+        <section class="mb-10">
+            <div class="flex items-center justify-around bg-[#17171a] h-[200px] rounded-2xl p-5">
+                <img class="rounded-full w-[120px] h-[120px] object-cover" src="./assets/images/my.jpeg"
+                    alt="Misbahudin">
+                <div class="flex flex-col space-y-3">
+                    <h3 class="font-semibold text-2xl">Misbahudin</h3>
+                    <p class="text-sm">Fullstack Developer</p>
+                </div>
+                <div class="border-r-2 h-[120px] mx-10"></div>
+                <div class="flex flex-col space-y-3 items-center">
+                    <h3 class="font-semibold text-2xl">Jumlah Buku</h3>
+                    <p class="font-semibold text-xl" id="countBook">0</p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div id="bookModal" hidden class="fixed inset-0 flex justify-center items-center backdrop-blur-sm">
+                <div class="bg-[#17171a] rounded-2xl p-5 w-full max-w-md">
+                    <h2 class="font-semibold text-2xl mb-5"></h2>
+                    <form id="bookForm" data-testid="bookForm">
+                        <div class="mb-4">
+                            <label for="bookFormTitle" class="block text-sm font-medium mb-1">Judul</label>
+                            <input id="bookFormTitle" type="text" required data-testid="bookFormTitleInput"
+                                class="w-full p-2 rounded bg-[#1f1f23] text-white" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="bookFormAuthor" class="block text-sm font-medium mb-1">Penulis</label>
+                            <input id="bookFormAuthor" type="text" required data-testid="bookFormAuthorInput"
+                                class="w-full p-2 rounded bg-[#1f1f23] text-white" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="bookFormYear" class="block text-sm font-medium mb-1">Tahun</label>
+                            <input id="bookFormYear" type="number" required data-testid="bookFormYearInput"
+                                class="w-full p-2 rounded bg-[#1f1f23]" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="bookFormIsComplete" class="flex items-center">
+                                <input id="bookFormIsComplete" type="checkbox" data-testid="bookFormIsCompleteCheckbox"
+                                    class="mr-2 cursor-pointer" />
+                                <span class="text-sm">Selesai dibaca</span>
+                            </label>
+                        </div>
+                        <button id="bookFormSubmit" type="submit" data-testid="bookFormSubmitButton"
+                            class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 cursor-pointer">
+                            Masukkan Buku ke rak <span id="bookShelf">Belum selesai dibaca</span>
+                        </button>
+                    </form>
+                    <button id="closeModal"
+                        class="mt-3 w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 cursor-pointer">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div id="searchBookModal" hidden class="fixed inset-0 flex justify-center items-center backdrop-blur-sm">
+                <div class="bg-[#17171a] rounded-2xl p-5 w-full max-w-md">
+                    <h2 class="mb-3 font-semibold">Cari Buku</h2>
+                    <form id="searchBook" data-testid="searchBookForm"
+                        class="flex flex-col items-center border border-gray-400 p-5 text-sm rounded-lg">
+                        <label for="searchBookTitle">Judul</label>
+                        <input class="text-center mt-2 mb-4 w-full p-2 rounded bg-[#1f1f23]" id="searchBookTitle"
+                            type="text" data-testid="searchBookFormTitleInput" />
+                        <button class="cursor-pointer bg-[#1f1f23] rounded w-1/2 p-3" id="searchSubmit" type="submit"
+                            data-testid="searchBookFormSubmitButton">Cari</button>
+                    </form>
+                    <div hidden id="searchResults">
+                        <h2 id="searchCountResults" class="mt-4 mb-3 font-semibold"></h2>
+                        <div id="searchResultsList" class="flex flex-col border border-gray-400 p-5 text-sm rounded-lg">
+                            <!-- list result from search -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex space-x-10">
+            <section class="flex flex-col bg-[#17171a] h-[180px] rounded-2xl p-5 w-1/2" id="sectionIncompleteBookList">
+                <h2 class="text-center text-lg mb-3 font-semibold">Belum selesai dibaca</h2>
+
+                <div class="border border-gray-400 p-5 text-sm rounded-lg" id="incompleteBookList"
+                    data-testid="incompleteBookList">
+                    <!-- list from incomplete book -->
+                </div>
+            </section>
+
+            <section class="flex flex-col bg-[#17171a] h-[180px] rounded-2xl p-5 w-1/2" id="sectionCompleteBookList">
+                <h2 class="text-center text-lg mb-3 font-semibold">Selesai dibaca</h2>
+
+                <div class="border border-gray-400 p-5 text-sm rounded-lg" id="completeBookList"
+                    data-testid="completeBookList">
+                    <!-- list from complete book -->
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>
