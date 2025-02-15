@@ -10,13 +10,13 @@ function generateId() {
   return +new Date();
 }
 
-function generateBookObject(id, title, author, year, isCompleted) {
+function generateBookObject(id, title, author, year, isComplete) {
   return {
     id,
     title,
     author,
     year: parseInt(year),
-    isCompleted: Boolean(isCompleted),
+    isComplete: Boolean(isComplete),
   };
 }
 
@@ -68,7 +68,7 @@ function loadDataFromStorage() {
 }
 
 function makeBook(bookObject, showActions = true) {
-  const { id, title, author, year, isCompleted } = bookObject;
+  const { id, title, author, year, isComplete } = bookObject;
 
   const div = document.createElement('div');
 
@@ -111,7 +111,7 @@ function makeBook(bookObject, showActions = true) {
     editButton.classList.add('cursor-pointer', 'max-h-fit');
 
     const moveButton = document.createElement('button');
-    moveButton.innerText = isCompleted ? '⏪' : '✅';
+    moveButton.innerText = isComplete ? '⏪' : '✅';
     moveButton.setAttribute('data-testid', 'bookItemIsCompleteButton');
     moveButton.classList.add('cursor-pointer', 'max-h-fit');
     moveButton.addEventListener('click', function () {
@@ -159,7 +159,7 @@ function toggleBookCompletion(bookId) {
   const book = findBook(bookId);
   if (book === null) return;
 
-  book.isCompleted = !book.isCompleted;
+  book.isComplete = !book.isComplete;
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
 }
@@ -176,7 +176,7 @@ function editBook(bookId) {
   book.title = newTitle;
   book.author = newAuthor;
   book.year = parseInt(newYear);
-  book.isCompleted = Boolean(isComplete);
+  book.isComplete = Boolean(isComplete);
 
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
@@ -221,6 +221,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const searchBookButton = document.getElementById('btnSearch');
   const searchBookModal = document.getElementById('searchBookModal');
   const closeModalButton = document.getElementById('closeModal');
+  const checkbox = document.getElementById('bookFormIsComplete');
+  const bookShelf = document.getElementById('bookShelf');
+
+  checkbox.addEventListener('change', function () {
+    if (checkbox.checked) {
+      bookShelf.textContent = 'Selesai dibaca';
+    } else {
+      bookShelf.textContent = 'Belum selesai dibaca';
+    }
+  })
 
   addBookButton.addEventListener('click', () => {
     editMode = false;
@@ -258,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('bookFormTitle').value = book.title;
       document.getElementById('bookFormAuthor').value = book.author;
       document.getElementById('bookFormYear').value = book.year;
-      document.getElementById('bookFormIsComplete').checked = book.isCompleted;
+      document.getElementById('bookFormIsComplete').checked = book.isComplete;
 
       bookModal.querySelector('h2').textContent = 'Edit Buku';
       bookModal.removeAttribute('hidden');
@@ -306,7 +316,7 @@ document.addEventListener(RENDER_EVENT, function () {
 
   for (const bookItem of books) {
     const bookElement = makeBook(bookItem);
-    if (bookItem.isCompleted) {
+    if (bookItem.isComplete) {
       completeBookList.append(bookElement);
     } else {
       incompleteBookList.append(bookElement);
