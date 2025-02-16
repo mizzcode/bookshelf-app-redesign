@@ -36,3 +36,4 @@ Untuk mempermudah penilaian submission yang dikirim, Anda perlu memahami ketentu
 ```
 
 Selamat mengerjakan dan sukses selalu!
+good luck
